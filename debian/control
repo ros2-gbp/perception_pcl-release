@@ -1,0 +1,12 @@
+Source: ros-dashing-pcl-conversions
+Section: misc
+Priority: optional
+Maintainer: Paul Bovbel <paul@bovbel.com>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, libpcl-dev, ros-dashing-ament-cmake, ros-dashing-ament-cmake-gtest, ros-dashing-message-filters, ros-dashing-pcl-msgs, ros-dashing-rclcpp, ros-dashing-sensor-msgs, ros-dashing-std-msgs, ros-dashing-ros-workspace
+Homepage: http://wiki.ros.org/pcl_conversions
+Standards-Version: 3.9.2
+
+Package: ros-dashing-pcl-conversions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, libpcl-dev, ros-dashing-message-filters, ros-dashing-pcl-msgs, ros-dashing-rclcpp, ros-dashing-sensor-msgs, ros-dashing-std-msgs, ros-dashing-ros-workspace
+Description: Provides conversions from PCL data types and ROS message types
