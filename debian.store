@@ -1,1 +1,1 @@
-{"trim": "", "base": "45e896c", "trimbase": "", "parent": "debian/foxy/pcl_conversions", "previous": "c9e9f19"}
+{"base": "e5200ed", "parent": "debian/rolling/pcl_conversions", "previous": "5495d33", "trim": "", "trimbase": ""}
