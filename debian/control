@@ -1,0 +1,13 @@
+Source: ros-rolling-pcl-ros
+Section: misc
+Priority: optional
+Maintainer: Paul Bovbel <paul@bovbel.com>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, libpcl-dev, ros-rolling-ament-cmake, ros-rolling-ament-cmake-gtest, ros-rolling-ament-lint-auto, ros-rolling-ament-lint-common, ros-rolling-geometry-msgs, ros-rolling-pcl-conversions, ros-rolling-rclcpp, ros-rolling-sensor-msgs, ros-rolling-tf2, ros-rolling-tf2-geometry-msgs, ros-rolling-tf2-ros, ros-rolling-ros-workspace
+Homepage: http://ros.org/wiki/perception_pcl
+Standards-Version: 3.9.2
+
+Package: ros-rolling-pcl-ros
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, libpcl-dev, ros-rolling-geometry-msgs, ros-rolling-pcl-conversions, ros-rolling-rclcpp, ros-rolling-sensor-msgs, ros-rolling-tf2, ros-rolling-tf2-geometry-msgs, ros-rolling-tf2-ros, ros-rolling-ros-workspace
+Description: PCL (Point Cloud Library) ROS interface stack.
+ PCL-ROS is the preferred bridge for 3D applications involving n-D Point Clouds and 3D geometry processing in ROS.
