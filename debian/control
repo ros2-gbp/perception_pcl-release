@@ -1,0 +1,13 @@
+Source: ros-humble-perception-pcl
+Section: misc
+Priority: optional
+Maintainer: Paul Bovbel <paul@bovbel.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-ros-workspace
+Homepage: http://ros.org/wiki/perception_pcl
+Standards-Version: 3.9.2
+
+Package: ros-humble-perception-pcl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-pcl-conversions, ros-humble-pcl-msgs, ros-humble-pcl-ros, ros-humble-ros-workspace
+Description: PCL (Point Cloud Library) ROS interface stack.
+ PCL-ROS is the preferred bridge for 3D applications involving n-D Point Clouds and 3D geometry processing in ROS.
