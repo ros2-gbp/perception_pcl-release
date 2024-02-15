@@ -64,7 +64,6 @@ mkdir -p .obj-%{_target_platform} && cd .obj-%{_target_platform}
 %if !0%{?with_tests}
     -DBUILD_TESTING=OFF \
 %endif
-    -DPython3_EXECUTABLE="%{__python3}" \
     ..
 
 %make_build
