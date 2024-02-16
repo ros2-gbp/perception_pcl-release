@@ -1,0 +1,12 @@
+Source: ros-humble-pcl-conversions
+Section: misc
+Priority: optional
+Maintainer: Paul Bovbel <paul@bovbel.com>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, libpcl-dev, ros-humble-ament-cmake, ros-humble-ament-cmake-gtest <!nocheck>, ros-humble-message-filters, ros-humble-pcl-msgs, ros-humble-rclcpp, ros-humble-sensor-msgs, ros-humble-std-msgs, ros-humble-ros-workspace
+Homepage: http://wiki.ros.org/pcl_conversions
+Standards-Version: 3.9.2
+
+Package: ros-humble-pcl-conversions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, libpcl-dev, ros-humble-message-filters, ros-humble-pcl-msgs, ros-humble-rclcpp, ros-humble-sensor-msgs, ros-humble-std-msgs, ros-humble-ros-workspace
+Description: Provides conversions from PCL data types and ROS message types
