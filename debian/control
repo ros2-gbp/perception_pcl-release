@@ -1,0 +1,12 @@
+Source: ros-rolling-pcl-conversions
+Section: misc
+Priority: optional
+Maintainer: Paul Bovbel <paul@bovbel.com>
+Build-Depends: debhelper (>= 9.0.0), ament-cmake, ament-cmake-googletest <!nocheck>, libeigen3-dev, libmessage-filters-dev, libpcl-dev, libpcl-msgs-dev, libsensor-msgs-dev, libstd-msgs-dev, python3-message-filters, python3-pcl-msgs, python3-sensor-msgs, python3-std-msgs, ros-pcl-msgs, ros-rolling-rclcpp, ros-sensor-msgs, ros-std-msgs, ros-rolling-ros-workspace
+Homepage: http://wiki.ros.org/pcl_conversions
+Standards-Version: 3.9.2
+
+Package: ros-rolling-pcl-conversions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, libmessage-filters-dev, libpcl-dev, libpcl-msgs-dev, libsensor-msgs-dev, libstd-msgs-dev, python3-message-filters, python3-pcl-msgs, python3-sensor-msgs, python3-std-msgs, ros-pcl-msgs, ros-rolling-rclcpp, ros-sensor-msgs, ros-std-msgs, ros-rolling-ros-workspace
+Description: Provides conversions from PCL data types and ROS message types
