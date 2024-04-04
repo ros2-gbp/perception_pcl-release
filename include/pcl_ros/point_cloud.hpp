@@ -44,11 +44,15 @@
 
 #include <ros/ros.h>
 #include <pcl/point_cloud.h>
+#include <pcl/pcl_config.h> // for PCL_VERSION_COMPARE
+#if PCL_VERSION_COMPARE(>=, 1, 11, 0)
+#include <pcl/type_traits.h>
+#else
 #include <pcl/point_traits.h>
+#endif // PCL_VERSION_COMPARE(>=, 1, 11, 0)
 #include <pcl/for_each_type.h>
 #include <pcl/conversions.h>
 #if ROS_POINTER_COMPATIBILITY_IMPLEMENTED
-#include <pcl/pcl_config.h>
 #if PCL_VERSION_COMPARE(>=, 1, 11, 0)
 #include <pcl/memory.h>
 #elif PCL_VERSION_COMPARE(>=, 1, 10, 0)
@@ -255,7 +259,7 @@ struct Serializer<pcl::PointCloud<T>>
     stream.next(row_step);
     uint32_t data_size = row_step * height;
     stream.next(data_size);
-    memcpy(stream.advance(data_size), &m.points[0], data_size);
+    memcpy(stream.advance(data_size), m.points.data(), data_size);
 
     uint8_t is_dense = m.is_dense;
     stream.next(is_dense);
@@ -296,7 +300,7 @@ struct Serializer<pcl::PointCloud<T>>
     stream.next(data_size);
     assert(data_size == m.height * m.width * point_step);
     m.points.resize(m.height * m.width);
-    uint8_t * m_data = reinterpret_cast<uint8_t *>(&m.points[0]);
+    uint8_t * m_data = reinterpret_cast<uint8_t *>(m.points.data());
     // If the data layouts match, can copy a whole row in one memcpy
     if (mapping.size() == 1 &&
       mapping[0].serialized_offset == 0 &&
