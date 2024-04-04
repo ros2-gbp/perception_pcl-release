@@ -10,12 +10,13 @@ endif()
 
 ## Find system dependencies
 find_package(Eigen3 REQUIRED)
-find_package(PCL REQUIRED QUIET COMPONENTS core features filters io segmentation surface)
+find_package(PCL REQUIRED QUIET COMPONENTS core common features filters io segmentation surface)
 
 ## Find ROS package dependencies
 find_package(ament_cmake REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
@@ -34,17 +35,15 @@ set(dependencies
   PCL
 )
 
-include_directories(
-  include
-  ${PCL_INCLUDE_DIRS}
-)
-
 ## Declare the pcl_ros_tf library
 add_library(pcl_ros_tf src/transforms.cpp)
+target_include_directories(pcl_ros_tf PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+)
 ament_target_dependencies(pcl_ros_tf
   ${dependencies}
 )
-target_link_libraries(pcl_ros_tf ${PCL_LIBRARIES})
 
 ### Nodelets
 #
@@ -120,8 +119,19 @@ target_link_libraries(pcl_ros_tf ${PCL_LIBRARIES})
 #
 ### Tools
 #
-#add_executable(pcd_to_pointcloud tools/pcd_to_pointcloud.cpp)
-#target_link_libraries(pcd_to_pointcloud ${Boost_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_library(pcd_to_pointcloud_lib SHARED tools/pcd_to_pointcloud.cpp)
+target_link_libraries(pcd_to_pointcloud_lib
+  ${PCL_LIBRARIES})
+target_include_directories(pcd_to_pointcloud_lib PUBLIC
+  ${PCL_INCLUDE_DIRS})
+ament_target_dependencies(pcd_to_pointcloud_lib
+  rclcpp
+  rclcpp_components
+  sensor_msgs
+  pcl_conversions)
+rclcpp_components_register_node(pcd_to_pointcloud_lib
+  PLUGIN "pcl_ros::PCDPublisher"
+  EXECUTABLE pcd_to_pointcloud)
 #
 #add_executable(pointcloud_to_pcd tools/pointcloud_to_pcd.cpp)
 #target_link_libraries(pointcloud_to_pcd ${Boost_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES})
@@ -165,18 +175,18 @@ endif()
 
 install(
   DIRECTORY include/
-  DESTINATION include
+  DESTINATION include/${PROJECT_NAME}
 )
 
 install(
   TARGETS
     pcl_ros_tf
+    pcd_to_pointcloud_lib
 #    pcl_ros_io
 #    pcl_ros_features
 #    pcl_ros_filters
 #    pcl_ros_surface
 #    pcl_ros_segmentation
-#    pcd_to_pointcloud
 #    pointcloud_to_pcd
 #    bag_to_pcd
 #    convert_pcd_to_image
@@ -185,14 +195,18 @@ install(
   RUNTIME DESTINATION bin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  INCLUDES DESTINATION include
 )
 
 install(DIRECTORY plugins samples
   DESTINATION share/${PROJECT_NAME})
 
-ament_export_include_directories(include)
+# Export old-style CMake variables
+ament_export_include_directories("include/${PROJECT_NAME}")
 ament_export_libraries(pcl_ros_tf)
-ament_export_dependencies(${dependencies})
+
+# Export modern CMake targets
 ament_export_targets(export_pcl_ros HAS_LIBRARY_TARGET)
+
+ament_export_dependencies(${dependencies})
+
 ament_package()
