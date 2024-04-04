@@ -36,6 +36,7 @@
 
 #include "pcl_ros/transforms.hpp"
 #include "pcl_ros/impl/transforms.hpp"
+
 #include <pcl/common/transforms.h>
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
@@ -43,17 +44,19 @@
 #include <tf2/exceptions.h>
 #include <tf2/LinearMath/Transform.h>
 #include <tf2/LinearMath/Vector3.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
+
+#include <Eigen/Core>
+#include <cmath>
+#include <limits>
+#include <string>
+
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <rclcpp/logging.hpp>
 #include <rclcpp/time.hpp>
-#include <Eigen/Dense>
-#include <cmath>
-#include <limits>
-#include <string>
 
 namespace pcl_ros
 {
@@ -74,7 +77,7 @@ transformPointCloud(
     transform =
       tf_buffer.lookupTransform(
       target_frame, in.header.frame_id, tf2_ros::fromMsg(
-        in.header.stamp));
+        in.header.stamp), tf2::Duration(std::chrono::seconds(1)));
   } catch (tf2::LookupException & e) {
     RCLCPP_ERROR(rclcpp::get_logger("pcl_ros"), "%s", e.what());
     return false;
@@ -166,7 +169,7 @@ transformPointCloud(
     out.is_dense = in.is_dense;
     out.data.resize(in.data.size());
     // Copy everything as it's faster than copying individual elements
-    memcpy(&out.data[0], &in.data[0], in.data.size());
+    memcpy(out.data.data(), in.data.data(), in.data.size());
   }
 
   Eigen::Array4i xyz_offset(in.fields[x_idx].offset, in.fields[y_idx].offset,
