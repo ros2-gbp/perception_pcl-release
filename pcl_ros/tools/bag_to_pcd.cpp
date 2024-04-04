@@ -46,16 +46,14 @@ Cloud Data) format.
 
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
-#include <pcl/common/io.h>
+#include <pcl/io/io.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl_conversions/pcl_conversions.h>
-
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
+#include <boost/filesystem.hpp>
 #include <sstream>
 #include <string>
-
-#include <boost/filesystem.hpp>
 #include "pcl_ros/transforms.hpp"
 
 typedef sensor_msgs::PointCloud2 PointCloud;

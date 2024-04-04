@@ -40,8 +40,10 @@
 
 // PCL includes
 #include <pcl/filters/voxel_grid.h>
-#include <vector>
 #include "pcl_ros/filters/filter.hpp"
+
+// Dynamic reconfigure
+#include "pcl_ros/VoxelGridConfig.hpp"
 
 namespace pcl_ros
 {
@@ -51,32 +53,38 @@ namespace pcl_ros
 class VoxelGrid : public Filter
 {
 protected:
+  /** \brief Pointer to a dynamic reconfigure service. */
+  boost::shared_ptr<dynamic_reconfigure::Server<pcl_ros::VoxelGridConfig>> srv_;
+
+  /** \brief The PCL filter implementation used. */
+  pcl::VoxelGrid<pcl::PCLPointCloud2> impl_;
+
   /** \brief Call the actual filter.
     * \param input the input point cloud dataset
     * \param indices the input set of indices to use from \a input
     * \param output the resultant filtered dataset
     */
-  inline void
+  virtual void
   filter(
-    const PointCloud2::ConstSharedPtr & input, const IndicesPtr & indices,
-    PointCloud2 & output) override;
+    const PointCloud2::ConstPtr & input, const IndicesPtr & indices,
+    PointCloud2 & output);
 
-  /** \brief Parameter callback
-    * \param params parameter values to set
+  /** \brief Child initialization routine.
+    * \param nh ROS node handle
+    * \param has_service set to true if the child has a Dynamic Reconfigure service
     */
-  rcl_interfaces::msg::SetParametersResult
-  config_callback(const std::vector<rclcpp::Parameter> & params);
+  bool
+  child_init(ros::NodeHandle & nh, bool & has_service);
 
-  OnSetParametersCallbackHandle::SharedPtr callback_handle_;
-
-private:
-  /** \brief The PCL filter implementation used. */
-  pcl::VoxelGrid<pcl::PCLPointCloud2> impl_;
+  /** \brief Dynamic reconfigure callback
+    * \param config the config object
+    * \param level the dynamic reconfigure level
+    */
+  void
+  config_callback(pcl_ros::VoxelGridConfig & config, uint32_t level);
 
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
-  explicit VoxelGrid(const rclcpp::NodeOptions & options);
 };
 }  // namespace pcl_ros
 

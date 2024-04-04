@@ -40,8 +40,9 @@
 
 // PCL includes
 #include <pcl/filters/extract_indices.h>
-#include <vector>
+
 #include "pcl_ros/filters/filter.hpp"
+#include "pcl_ros/ExtractIndicesConfig.hpp"
 
 namespace pcl_ros
 {
@@ -52,6 +53,9 @@ namespace pcl_ros
 class ExtractIndices : public Filter
 {
 protected:
+  /** \brief Pointer to a dynamic reconfigure service. */
+  boost::shared_ptr<dynamic_reconfigure::Server<pcl_ros::ExtractIndicesConfig>> srv_;
+
   /** \brief Call the actual filter.
     * \param input the input point cloud dataset
     * \param indices the input set of indices to use from \a input
@@ -59,16 +63,29 @@ protected:
     */
   inline void
   filter(
-    const PointCloud2::ConstSharedPtr & input, const IndicesPtr & indices,
-    PointCloud2 & output) override;
+    const PointCloud2::ConstPtr & input, const IndicesPtr & indices,
+    PointCloud2 & output)
+  {
+    boost::mutex::scoped_lock lock(mutex_);
+    pcl::PCLPointCloud2::Ptr pcl_input(new pcl::PCLPointCloud2);
+    pcl_conversions::toPCL(*(input), *(pcl_input));
+    impl_.setInputCloud(pcl_input);
+    impl_.setIndices(indices);
+    pcl::PCLPointCloud2 pcl_output;
+    impl_.filter(pcl_output);
+    pcl_conversions::moveFromPCL(pcl_output, output);
+  }
 
-  /** \brief Parameter callback
-    * \param params parameter values to set
+  /** \brief Child initialization routine.
+    * \param nh ROS node handle
+    * \param has_service set to true if the child has a Dynamic Reconfigure service
     */
-  rcl_interfaces::msg::SetParametersResult
-  config_callback(const std::vector<rclcpp::Parameter> & params);
+  virtual bool
+  child_init(ros::NodeHandle & nh, bool & has_service);
 
-  OnSetParametersCallbackHandle::SharedPtr callback_handle_;
+  /** \brief Dynamic reconfigure service callback. */
+  void
+  config_callback(pcl_ros::ExtractIndicesConfig & config, uint32_t level);
 
 private:
   /** \brief The PCL filter implementation used. */
@@ -76,8 +93,6 @@ private:
 
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
-  explicit ExtractIndices(const rclcpp::NodeOptions & options);
 };
 }  // namespace pcl_ros
 

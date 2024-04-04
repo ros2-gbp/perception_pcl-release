@@ -38,10 +38,11 @@
 #ifndef PCL_ROS__FILTERS__FILTER_HPP_
 #define PCL_ROS__FILTERS__FILTER_HPP_
 
-#include <memory>
+#include <pcl/filters/filter.h>
+#include <dynamic_reconfigure/server.h>
 #include <string>
-#include <vector>
-#include "pcl_ros/pcl_node.hpp"
+#include "pcl_ros/pcl_nodelet.hpp"
+#include "pcl_ros/FilterConfig.hpp"
 
 namespace pcl_ros
 {
@@ -51,30 +52,19 @@ namespace sync_policies = message_filters::sync_policies;
   * applicable to all filters are defined here as static methods.
   * \author Radu Bogdan Rusu
   */
-class Filter : public PCLNode<sensor_msgs::msg::PointCloud2>
+class Filter : public PCLNodelet
 {
 public:
-  typedef sensor_msgs::msg::PointCloud2 PointCloud2;
+  typedef sensor_msgs::PointCloud2 PointCloud2;
 
   typedef pcl::IndicesPtr IndicesPtr;
   typedef pcl::IndicesConstPtr IndicesConstPtr;
 
-  /** \brief Filter constructor
-    * \param node_name node name
-    * \param options node options
-    */
-  Filter(std::string node_name, const rclcpp::NodeOptions & options);
+  Filter() {}
 
 protected:
-  /** \brief declare and subscribe to param callback for input_frame and output_frame params */
-  void
-  use_frame_params();
-
-  /** \brief Add common parameters */
-  std::vector<std::string> add_common_params();
-
   /** \brief The input PointCloud subscriber. */
-  rclcpp::Subscription<PointCloud2>::SharedPtr sub_input_;
+  ros::Subscriber sub_input_;
 
   message_filters::Subscriber<PointCloud2> sub_input_filter_;
 
@@ -106,7 +96,18 @@ protected:
   std::string tf_output_frame_;
 
   /** \brief Internal mutex. */
-  std::mutex mutex_;
+  boost::mutex mutex_;
+
+  /** \brief Child initialization routine.
+    * \param nh ROS node handle
+    * \param has_service set to true if the child has a Dynamic Reconfigure service
+    */
+  virtual bool
+  child_init(ros::NodeHandle & nh, bool & has_service)
+  {
+    has_service = false;
+    return true;
+  }
 
   /** \brief Virtual abstract filter method. To be implemented by every child.
     * \param input the input point cloud dataset.
@@ -115,7 +116,7 @@ protected:
     */
   virtual void
   filter(
-    const PointCloud2::ConstSharedPtr & input, const IndicesPtr & indices,
+    const PointCloud2::ConstPtr & input, const IndicesPtr & indices,
     PointCloud2 & output) = 0;
 
   /** \brief Lazy transport subscribe routine. */
@@ -126,34 +127,36 @@ protected:
   virtual void
   unsubscribe();
 
+  /** \brief Nodelet initialization routine. */
+  virtual void
+  onInit();
+
   /** \brief Call the child filter () method, optionally transform the result, and publish it.
     * \param input the input point cloud dataset.
     * \param indices a pointer to the vector of point indices to use.
     */
   void
-  computePublish(const PointCloud2::ConstSharedPtr & input, const IndicesPtr & indices);
+  computePublish(const PointCloud2::ConstPtr & input, const IndicesPtr & indices);
 
 private:
-  /** \brief Pointer to parameters callback handle. */
-  OnSetParametersCallbackHandle::SharedPtr callback_handle_;
+  /** \brief Pointer to a dynamic reconfigure service. */
+  boost::shared_ptr<dynamic_reconfigure::Server<pcl_ros::FilterConfig>> srv_;
 
   /** \brief Synchronized input, and indices.*/
-  std::shared_ptr<message_filters::Synchronizer<sync_policies::ExactTime<PointCloud2,
+  boost::shared_ptr<message_filters::Synchronizer<sync_policies::ExactTime<PointCloud2,
     PointIndices>>> sync_input_indices_e_;
-  std::shared_ptr<message_filters::Synchronizer<sync_policies::ApproximateTime<PointCloud2,
+  boost::shared_ptr<message_filters::Synchronizer<sync_policies::ApproximateTime<PointCloud2,
     PointIndices>>> sync_input_indices_a_;
 
-  /** \brief Parameter callback
-    * \param params parameter values to set
-    */
-  rcl_interfaces::msg::SetParametersResult
-  config_callback(const std::vector<rclcpp::Parameter> & params);
+  /** \brief Dynamic reconfigure service callback. */
+  virtual void
+  config_callback(pcl_ros::FilterConfig & config, uint32_t level);
 
   /** \brief PointCloud2 + Indices data callback. */
   void
   input_indices_callback(
-    const PointCloud2::ConstSharedPtr & cloud,
-    const PointIndices::ConstSharedPtr & indices);
+    const PointCloud2::ConstPtr & cloud,
+    const PointIndicesConstPtr & indices);
 
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
