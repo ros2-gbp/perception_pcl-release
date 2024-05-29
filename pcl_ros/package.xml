@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>pcl_ros</name>
-  <version>2.6.1</version>
+  <version>2.5.2</version>
   <description>
 
   PCL (Point Cloud Library) ROS interface stack. PCL-ROS is the preferred
@@ -27,7 +27,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <build_depend>libpcl-all-dev</build_depend>
+  <build_export_depend>libpcl-all-dev</build_export_depend>
 
   <depend>eigen</depend>
   <depend>pcl_conversions</depend>
@@ -49,12 +49,6 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>ament_cmake_gtest</test_depend>
-  <test_depend>ament_cmake_pytest</test_depend>
-  <test_depend>launch</test_depend>
-  <test_depend>launch_ros</test_depend>
-  <test_depend>launch_testing</test_depend>
-  <test_depend>launch_testing_ros</test_depend>
-  <test_depend>sensor_msgs</test_depend>
 
     <!--
     <export>

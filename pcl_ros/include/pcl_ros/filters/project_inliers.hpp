@@ -38,10 +38,8 @@
 #ifndef PCL_ROS__FILTERS__PROJECT_INLIERS_HPP_
 #define PCL_ROS__FILTERS__PROJECT_INLIERS_HPP_
 
-// PCL includes
 #include <pcl/filters/project_inliers.h>
 #include <message_filters/subscriber.h>
-#include <memory>
 #include "pcl_ros/filters/filter.hpp"
 
 
@@ -57,7 +55,8 @@ namespace sync_policies = message_filters::sync_policies;
 class ProjectInliers : public Filter
 {
 public:
-  explicit ProjectInliers(const rclcpp::NodeOptions & options);
+  ProjectInliers()
+  : model_() {}
 
 protected:
   /** \brief Call the actual filter.
@@ -67,8 +66,20 @@ protected:
     */
   inline void
   filter(
-    const PointCloud2::ConstSharedPtr & input, const IndicesPtr & indices,
-    PointCloud2 & output) override;
+    const PointCloud2::ConstPtr & input, const IndicesPtr & indices,
+    PointCloud2 & output)
+  {
+    pcl::PCLPointCloud2::Ptr pcl_input(new pcl::PCLPointCloud2);
+    pcl_conversions::toPCL(*(input), *(pcl_input));
+    impl_.setInputCloud(pcl_input);
+    impl_.setIndices(indices);
+    pcl::ModelCoefficients::Ptr pcl_model(new pcl::ModelCoefficients);
+    pcl_conversions::toPCL(*(model_), *(pcl_model));
+    impl_.setModelCoefficients(pcl_model);
+    pcl::PCLPointCloud2 pcl_output;
+    impl_.filter(pcl_output);
+    pcl_conversions::moveFromPCL(pcl_output, output);
+  }
 
 private:
   /** \brief A pointer to the vector of model coefficients. */
@@ -78,20 +89,25 @@ private:
   message_filters::Subscriber<ModelCoefficients> sub_model_;
 
   /** \brief Synchronized input, indices, and model coefficients.*/
-  std::shared_ptr<message_filters::Synchronizer<sync_policies::ExactTime<PointCloud2,
+  boost::shared_ptr<message_filters::Synchronizer<sync_policies::ExactTime<PointCloud2,
     PointIndices, ModelCoefficients>>> sync_input_indices_model_e_;
-  std::shared_ptr<message_filters::Synchronizer<sync_policies::ApproximateTime<PointCloud2,
+  boost::shared_ptr<message_filters::Synchronizer<sync_policies::ApproximateTime<PointCloud2,
     PointIndices, ModelCoefficients>>> sync_input_indices_model_a_;
   /** \brief The PCL filter implementation used. */
   pcl::ProjectInliers<pcl::PCLPointCloud2> impl_;
 
-  void subscribe() override;
-  void unsubscribe() override;
+  /** \brief Nodelet initialization routine. */
+  virtual void
+  onInit();
+
+  /** \brief NodeletLazy connection routine. */
+  void subscribe();
+  void unsubscribe();
 
   /** \brief PointCloud2 + Indices + Model data callback. */
   void
   input_indices_model_callback(
-    const PointCloud2::ConstSharedPtr & cloud,
+    const PointCloud2::ConstPtr & cloud,
     const PointIndicesConstPtr & indices,
     const ModelCoefficientsConstPtr & model);
 
