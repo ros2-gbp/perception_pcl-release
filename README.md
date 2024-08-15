@@ -1,3 +1,29 @@
+## perception_pcl (humble) - 2.4.4-1
+
+The packages in the `perception_pcl` repository were released into the `humble` distro by running `/usr/bin/bloom-release perception_pcl --rosdistro humble --track humble` on `Thu, 15 Aug 2024 19:43:50 -0000`
+
+These packages were released:
+- `pcl_conversions`
+- `pcl_ros`
+- `perception_pcl`
+
+Version of package(s) in repository `perception_pcl`:
+
+- upstream repository: https://github.com/ros-perception/perception_pcl.git
+- release repository: https://github.com/ros2-gbp/perception_pcl-release.git
+- rosdistro version: `2.4.0-6`
+- old version: `2.4.3-1`
+- new version: `2.4.4-1`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.24.0`
+- rosdistro version: `0.9.1`
+- vcstools version: `0.1.42`
+
+
 ## perception_pcl (iron) - 2.5.4-1
 
 The packages in the `perception_pcl` repository were released into the `iron` distro by running `/usr/bin/bloom-release perception_pcl --track iron --rosdistro iron` on `Thu, 06 Jun 2024 16:23:41 -0000`
