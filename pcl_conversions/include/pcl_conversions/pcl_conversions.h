@@ -217,6 +217,10 @@ namespace pcl_conversions {
     for(; it != pcl_pfs.end(); ++it, ++i) {
       fromPCL(*(it), pfs[i]);
     }
+    std::sort(pfs.begin(), pfs.end(), [](const auto& field_a, const auto& field_b)
+                                      {
+                                        return field_a.offset < field_b.offset;
+                                      });
   }
 
   inline
@@ -560,7 +564,12 @@ namespace pcl {
   void toROSMsg(const pcl::PointCloud<T> &pcl_cloud, sensor_msgs::msg::PointCloud2 &cloud)
   {
     pcl::PCLPointCloud2 pcl_pc2;
+#if PCL_VERSION_COMPARE(>=, 1, 14, 1)
+    // if PCL version is recent enough, request that all padding be removed to make the msg as small as possible
+    pcl::toPCLPointCloud2(pcl_cloud, pcl_pc2, false);
+#else
     pcl::toPCLPointCloud2(pcl_cloud, pcl_pc2);
+#endif
     pcl_conversions::moveFromPCL(pcl_pc2, cloud);
   }
 
