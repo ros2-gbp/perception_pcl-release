@@ -2,6 +2,16 @@
 Changelog for package pcl_conversions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.7.1 (2025-05-16)
+------------------
+* Bump minimum cmake version to 3.20 (`#496 <https://github.com/ros-perception/perception_pcl/issues/496>`_)
+* Contributors: Ramon Wijnands
+
+2.7.0 (2025-05-15)
+------------------
+* Modern CMake (`#489 <https://github.com/ros-perception/perception_pcl/issues/489>`_)
+* Contributors: Patrick Roncagliolo
+
 2.6.3 (2025-04-07)
 ------------------
 * Update for ROS 2 file name changes (`#472 <https://github.com/ros-perception/perception_pcl/issues/472>`_)
