@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(pcl_ros)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -23,6 +23,8 @@ find_package(tf2 REQUIRED)
 find_package(tf2_eigen REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(rosbag2_transport REQUIRED)
 
 set(dependencies
   pcl_conversions
@@ -36,6 +38,7 @@ set(dependencies
   tf2_ros
   EIGEN3
   PCL
+  visualization_msgs
 )
 
 ## Declare the pcl_ros_tf library
@@ -172,6 +175,7 @@ rclcpp_components_register_node(pcd_to_pointcloud_lib
 
 add_library(pointcloud_to_pcd_lib SHARED tools/pointcloud_to_pcd.cpp)
 target_link_libraries(pointcloud_to_pcd_lib
+  pcl_ros_tf
   ${PCL_LIBRARIES})
 target_include_directories(pointcloud_to_pcd_lib PUBLIC
   ${PCL_INCLUDE_DIRS})
@@ -186,6 +190,51 @@ rclcpp_components_register_node(pointcloud_to_pcd_lib
   PLUGIN "pcl_ros::PointCloudToPCD"
   EXECUTABLE pointcloud_to_pcd)
 
+
+# =====================================================
+# CombinedPointCloudToPCD Component
+# =====================================================
+add_library(combined_pointcloud_to_pcd_lib SHARED
+  tools/combined_pointcloud_to_pcd.cpp
+)
+
+# Include directories and link libraries
+target_include_directories(combined_pointcloud_to_pcd_lib PUBLIC
+  ${PCL_INCLUDE_DIRS}
+)
+target_link_libraries(combined_pointcloud_to_pcd_lib
+  ${PCL_LIBRARIES}
+)
+
+
+ament_target_dependencies(combined_pointcloud_to_pcd_lib
+  rclcpp
+  rclcpp_components
+  sensor_msgs
+  pcl_conversions
+  tf2_eigen
+  tf2_ros)
+
+add_library(bag_to_pcd_lib SHARED tools/bag_to_pcd.cpp)
+target_include_directories(bag_to_pcd_lib PRIVATE
+  ${PCL_INCLUDE_DIRS}
+)
+target_link_libraries(bag_to_pcd_lib PRIVATE
+  ${PCL_LIBRARIES}
+  ${sensor_msgs_TARGETS}
+  pcl_conversions::pcl_conversions
+  rclcpp::rclcpp
+  rclcpp_components::component
+  rosbag2_transport::rosbag2_transport
+)
+rclcpp_components_register_node(bag_to_pcd_lib
+  PLUGIN "pcl_ros::BagToPCD"
+  EXECUTABLE bag_to_pcd)
+
+# Register the component
+rclcpp_components_register_node(combined_pointcloud_to_pcd_lib
+  PLUGIN "pcl_ros::CombinedPointCloudToPCD"
+  EXECUTABLE combined_pointcloud_to_pcd)
 #
 #add_executable(pointcloud_to_pcd tools/pointcloud_to_pcd.cpp)
 #target_link_libraries(pointcloud_to_pcd ${Boost_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES})
@@ -244,7 +293,8 @@ install(
 #    pcl_ros_surface
 #    pcl_ros_segmentation
     pointcloud_to_pcd_lib
-#    bag_to_pcd
+    combined_pointcloud_to_pcd_lib
+    bag_to_pcd_lib
 #    convert_pcd_to_image
 #    convert_pointcloud_to_image
   EXPORT export_pcl_ros
