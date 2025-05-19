@@ -2,6 +2,14 @@
 Changelog for package perception_pcl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.7.1 (2025-05-16)
+------------------
+* Bump minimum cmake version to 3.20 (`#496 <https://github.com/ros-perception/perception_pcl/issues/496>`_)
+* Contributors: Ramon Wijnands
+
+2.7.0 (2025-05-15)
+------------------
+
 2.6.3 (2025-04-07)
 ------------------
 
