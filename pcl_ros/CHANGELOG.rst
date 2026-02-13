@@ -2,6 +2,24 @@
 Changelog for package pcl_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.8.0 (2026-02-12)
+------------------
+* chore: tf2_ros to hpp headers (`#506 <https://github.com/ros-perception/perception_pcl/issues/506>`_)
+* Add ament_cmake_ros to build libraries by default as SHARED
+  Previously there were some inconsistencies in the libraries, some where
+  shared, others where static. By adding `ament_cmake_ros` everything is
+  shared by default.
+* Add keep organized parameter (`#518 <https://github.com/ros-perception/perception_pcl/issues/518>`_)
+* Fix BSD-3-Cause license name in package.xml files (`#516 <https://github.com/ros-perception/perception_pcl/issues/516>`_)
+* Contributors: Garrett Brown, Ramon Wijnands, Tatsuro Sakaguchi, Tim Clephas
+
+2.7.4 (2026-01-09)
+------------------
+* Update PCLNode to use TransformListener Node constructor so that it does not create a new node under the hood
+* Correct Statistical Outlier Removal param description
+* Add support for Windows
+* Contributors: AntoBrandi, Silvio Traversaro, Xavier Ruiz
+
 2.7.3 (2025-06-05)
 ------------------
 * Fix ament_export_dependencies (`#500 <https://github.com/ros-perception/perception_pcl/issues/500>`_)
