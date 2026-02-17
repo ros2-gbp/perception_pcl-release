@@ -2,51 +2,6 @@
 Changelog for package pcl_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.8.0 (2026-02-12)
-------------------
-* chore: tf2_ros to hpp headers (`#506 <https://github.com/ros-perception/perception_pcl/issues/506>`_)
-* Add ament_cmake_ros to build libraries by default as SHARED
-  Previously there were some inconsistencies in the libraries, some where
-  shared, others where static. By adding `ament_cmake_ros` everything is
-  shared by default.
-* Add keep organized parameter (`#518 <https://github.com/ros-perception/perception_pcl/issues/518>`_)
-* Fix BSD-3-Cause license name in package.xml files (`#516 <https://github.com/ros-perception/perception_pcl/issues/516>`_)
-* Contributors: Garrett Brown, Ramon Wijnands, Tatsuro Sakaguchi, Tim Clephas
-
-2.7.4 (2026-01-09)
-------------------
-* Update PCLNode to use TransformListener Node constructor so that it does not create a new node under the hood
-* Correct Statistical Outlier Removal param description
-* Add support for Windows
-* Contributors: AntoBrandi, Silvio Traversaro, Xavier Ruiz
-
-2.7.3 (2025-06-05)
-------------------
-* Fix ament_export_dependencies (`#500 <https://github.com/ros-perception/perception_pcl/issues/500>`_)
-* Contributors: Thomas Emter
-
-2.7.2 (2025-05-23)
-------------------
-* Remove calls to `ament_target_dependencies` (`#498 <https://github.com/ros-perception/perception_pcl/issues/498>`_)
-* Contributors: Ramon Wijnands
-
-2.7.1 (2025-05-16)
-------------------
-* Fix warning: 'subscribe<>' is deprecated: use rclcpp::QoS (`#497 <https://github.com/ros-perception/perception_pcl/issues/497>`_)
-* Bump minimum cmake version to 3.20 (`#496 <https://github.com/ros-perception/perception_pcl/issues/496>`_)
-* Contributors: Ramon Wijnands
-
-2.7.0 (2025-05-15)
-------------------
-* Fix downstream CMake error: rosbag2_transport not found (`#494 <https://github.com/ros-perception/perception_pcl/issues/494>`_)
-* Port bag_to_pcd to ROS 2 (`#486 <https://github.com/ros-perception/perception_pcl/issues/486>`_)
-* Add CombinedPointCloudToPCD Node for Accumulating Multiple Point Clouds into a Single PCD (`#479 <https://github.com/ros-perception/perception_pcl/issues/479>`_)
-* Fix deprecation of .h files in message_filters (`#493 <https://github.com/ros-perception/perception_pcl/issues/493>`_)
-* Improve pointcloud_to_pcd by keeping all field available in sensor_msgs (`#491 <https://github.com/ros-perception/perception_pcl/issues/491>`_)
-* Added crop box marker publisher (`#488 <https://github.com/ros-perception/perception_pcl/issues/488>`_)
-* Properly order the header includes for cpplint (`#490 <https://github.com/ros-perception/perception_pcl/issues/490>`_)
-* Contributors: Adraub, Alireza Moayyedi, Ramon Wijnands, Tim Clephas, Valerio Passamano, vladimirjendrol
-
 2.6.3 (2025-04-07)
 ------------------
 * Fix pcd timestamp format output in pointcloud_to_pcd (`#481 <https://github.com/ros-perception/perception_pcl/issues/481>`_)

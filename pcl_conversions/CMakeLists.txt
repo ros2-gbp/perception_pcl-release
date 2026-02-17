@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.5)
 project(pcl_conversions)
 
 # Default to C++14
@@ -28,35 +28,13 @@ set(dependencies
   std_msgs
 )
 
-add_library(${PROJECT_NAME} INTERFACE)
-
-target_include_directories(
-  ${PROJECT_NAME}
-  INTERFACE
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+include_directories(
+  include
+  ${PCL_COMMON_INCLUDE_DIRS}
 )
 
-target_link_libraries(
-  ${PROJECT_NAME} INTERFACE
-  rclcpp::rclcpp
-  message_filters::message_filters
-  pcl_common
-  pcl_io
-  ${std_msgs_TARGETS}
-  ${pcl_msgs_TARGETS}
-  ${sensor_msgs_TARGETS}
-)
-
-install(
-  DIRECTORY include/
+install(DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
-)
-
-install(
-  TARGETS ${PROJECT_NAME}
-  EXPORT ${PROJECT_NAME}_export
-  INCLUDES DESTINATION include
 )
 
 # Add gtest based cpp test target
@@ -64,9 +42,14 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
 
   ament_add_gtest(${PROJECT_NAME}-test test/test_pcl_conversions.cpp)
-  target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+  ament_target_dependencies(${PROJECT_NAME}-test
+    ${dependencies}
+  )
+  target_link_libraries(${PROJECT_NAME}-test ${Boost_LIBRARIES} ${PCL_LIBRARIES})
 endif()
 
-ament_export_targets(${PROJECT_NAME}_export)
+# Export old-style CMake variables
+ament_export_include_directories("include/${PROJECT_NAME}")
+
 ament_export_dependencies(${dependencies} PCL)
 ament_package()
