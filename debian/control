@@ -1,0 +1,13 @@
+Source: ros-lyrical-pcl-ros
+Section: misc
+Priority: optional
+Maintainer: Paul Bovbel <paul@bovbel.com>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, libpcl-dev, ros-lyrical-ament-cmake, ros-lyrical-ament-cmake-gtest <!nocheck>, ros-lyrical-ament-cmake-pytest <!nocheck>, ros-lyrical-ament-cmake-ros, ros-lyrical-ament-lint-auto <!nocheck>, ros-lyrical-ament-lint-common <!nocheck>, ros-lyrical-geometry-msgs, ros-lyrical-launch <!nocheck>, ros-lyrical-launch-ros <!nocheck>, ros-lyrical-launch-testing <!nocheck>, ros-lyrical-launch-testing-ros <!nocheck>, ros-lyrical-pcl-conversions, ros-lyrical-rclcpp, ros-lyrical-rclcpp-components, ros-lyrical-rosbag2-transport, ros-lyrical-sensor-msgs, ros-lyrical-sensor-msgs <!nocheck>, ros-lyrical-tf2, ros-lyrical-tf2-eigen, ros-lyrical-tf2-geometry-msgs, ros-lyrical-tf2-ros, ros-lyrical-visualization-msgs, ros-lyrical-ros-workspace
+Homepage: http://ros.org/wiki/perception_pcl
+Standards-Version: 3.9.2
+
+Package: ros-lyrical-pcl-ros
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, libpcl-common1.15, libpcl-dev, libpcl-features1.15, libpcl-filters1.15, libpcl-io1.15, libpcl-segmentation1.15, libpcl-surface1.15, ros-lyrical-geometry-msgs, ros-lyrical-pcl-conversions, ros-lyrical-rclcpp, ros-lyrical-rclcpp-components, ros-lyrical-rosbag2-transport, ros-lyrical-sensor-msgs, ros-lyrical-tf2, ros-lyrical-tf2-eigen, ros-lyrical-tf2-geometry-msgs, ros-lyrical-tf2-ros, ros-lyrical-visualization-msgs, ros-lyrical-ros-workspace
+Description: PCL (Point Cloud Library) ROS interface stack.
+ PCL-ROS is the preferred bridge for 3D applications involving n-D Point Clouds and 3D geometry processing in ROS.
