@@ -1,3 +1,29 @@
+## perception_pcl (lyrical) - 2.9.0-1
+
+The packages in the `perception_pcl` repository were released into the `lyrical` distro by running `/home/cottsay/infra_ws/install/bin/bloom-release perception_pcl -r lyrical --unsafe` on `Wed, 29 Apr 2026 23:29:10 -0000`
+
+These packages were released:
+- `pcl_conversions`
+- `pcl_ros`
+- `perception_pcl`
+
+Version of package(s) in repository `perception_pcl`:
+
+- upstream repository: https://github.com/ros-perception/perception_pcl.git
+- release repository: https://github.com/ros2-gbp/perception_pcl-release.git
+- rosdistro version: `2.8.0-3`
+- old version: `2.8.0-3`
+- new version: `2.9.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.14.0`
+- catkin_pkg version: `1.1.0`
+- rosdep version: `0.26.0`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## perception_pcl (rolling) - 2.9.0-1
 
 The packages in the `perception_pcl` repository were released into the `rolling` distro by running `/usr/bin/bloom-release perception_pcl --rosdistro rolling --track rolling --edit` on `Wed, 29 Apr 2026 23:15:54 -0000`
