@@ -47,21 +47,20 @@
 #include <pcl/pcl_base.h>
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <tf2_ros/transform_listener.h>
-#include <tf2_ros/buffer.h>
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include <message_filters/subscriber.hpp>
-#include <message_filters/synchronizer.hpp>
-#include <message_filters/sync_policies/exact_time.hpp>
 #include <message_filters/sync_policies/approximate_time.hpp>
+#include <message_filters/sync_policies/exact_time.hpp>
+#include <message_filters/synchronizer.hpp>
+#include <pcl_msgs/msg/model_coefficients.hpp>
+#include <pcl_msgs/msg/point_indices.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
-#include <pcl_msgs/msg/point_indices.hpp>
-#include <pcl_msgs/msg/model_coefficients.hpp>
+#include <tf2_ros/buffer.hpp>
+#include <tf2_ros/transform_listener.hpp>
 
 // #include "pcl_ros/point_cloud.hpp"
 
@@ -101,7 +100,7 @@ public:
     use_indices_(false), transient_local_indices_(false),
     max_queue_size_(3), approximate_sync_(false),
     tf_buffer_(this->get_clock()),
-    tf_listener_(tf_buffer_)
+    tf_listener_(tf_buffer_, this)
   {
     {
       rcl_interfaces::msg::ParameterDescriptor desc;

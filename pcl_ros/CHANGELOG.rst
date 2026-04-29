@@ -2,39 +2,58 @@
 Changelog for package pcl_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.6.4 (2026-02-17)
+2.8.0 (2026-02-12)
 ------------------
+* chore: tf2_ros to hpp headers (`#506 <https://github.com/ros-perception/perception_pcl/issues/506>`_)
 * Add ament_cmake_ros to build libraries by default as SHARED
   Previously there were some inconsistencies in the libraries, some where
   shared, others where static. By adding `ament_cmake_ros` everything is
   shared by default.
-* Split off pcl_ros_filter into separate library (`#480 <https://github.com/ros-perception/perception_pcl/issues/480>`_)
-  Co-authored-by: Paul Bovbel <paul@bovbel.com>
 * Add keep organized parameter (`#518 <https://github.com/ros-perception/perception_pcl/issues/518>`_)
 * Fix BSD-3-Cause license name in package.xml files (`#516 <https://github.com/ros-perception/perception_pcl/issues/516>`_)
+* Contributors: Garrett Brown, Ramon Wijnands, Tatsuro Sakaguchi, Tim Clephas
+
+2.7.4 (2026-01-09)
+------------------
+* Update PCLNode to use TransformListener Node constructor so that it does not create a new node under the hood
 * Correct Statistical Outlier Removal param description
 * Add support for Windows
+* Contributors: AntoBrandi, Silvio Traversaro, Xavier Ruiz
+
+2.7.3 (2025-06-05)
+------------------
+* Fix ament_export_dependencies (`#500 <https://github.com/ros-perception/perception_pcl/issues/500>`_)
+* Contributors: Thomas Emter
+
+2.7.2 (2025-05-23)
+------------------
+* Remove calls to `ament_target_dependencies` (`#498 <https://github.com/ros-perception/perception_pcl/issues/498>`_)
+* Contributors: Ramon Wijnands
+
+2.7.1 (2025-05-16)
+------------------
+* Fix warning: 'subscribe<>' is deprecated: use rclcpp::QoS (`#497 <https://github.com/ros-perception/perception_pcl/issues/497>`_)
+* Bump minimum cmake version to 3.20 (`#496 <https://github.com/ros-perception/perception_pcl/issues/496>`_)
+* Contributors: Ramon Wijnands
+
+2.7.0 (2025-05-15)
+------------------
+* Fix downstream CMake error: rosbag2_transport not found (`#494 <https://github.com/ros-perception/perception_pcl/issues/494>`_)
+* Port bag_to_pcd to ROS 2 (`#486 <https://github.com/ros-perception/perception_pcl/issues/486>`_)
 * Add CombinedPointCloudToPCD Node for Accumulating Multiple Point Clouds into a Single PCD (`#479 <https://github.com/ros-perception/perception_pcl/issues/479>`_)
-  - Introduces CombinedPointCloudToPCD, a ROS 2 component node that:
-  - Subscribes to sensor_msgs/PointCloud2 and accumulates multiple clouds.
-  - Optionally transforms each cloud to a fixed frame.
-  - Allows saving a combined PCD file in either binary, compressed, or ASCII format.
-  - Permits saving on node shutdown or at a configurable timer interval.
-  - Preserves the BSD License from Willow Garage and references original authors.
-  - Useful for aggregating data from multiple scans into one dataset.
-* fix deprecation of .h files in message_filters (`#493 <https://github.com/ros-perception/perception_pcl/issues/493>`_)
+* Fix deprecation of .h files in message_filters (`#493 <https://github.com/ros-perception/perception_pcl/issues/493>`_)
 * Improve pointcloud_to_pcd by keeping all field available in sensor_msgs (`#491 <https://github.com/ros-perception/perception_pcl/issues/491>`_)
+* Added crop box marker publisher (`#488 <https://github.com/ros-perception/perception_pcl/issues/488>`_)
+* Properly order the header includes for cpplint (`#490 <https://github.com/ros-perception/perception_pcl/issues/490>`_)
+* Contributors: Adraub, Alireza Moayyedi, Ramon Wijnands, Tim Clephas, Valerio Passamano, vladimirjendrol
+
+2.6.3 (2025-04-07)
+------------------
 * Fix pcd timestamp format output in pointcloud_to_pcd (`#481 <https://github.com/ros-perception/perception_pcl/issues/481>`_)
-  * Fix pcd timestamp format output in pointcloud_to_pcd
-  Fix pcd timestamp indentation offset if nanosec value is less than 100000000 ns
-  * Fix coding style
-  Fixes uncrustify CI error
-* Add lazy feature (`#476 <https://github.com/ros-perception/perception_pcl/issues/476>`_)
-  * Add lazy feature
-  * Fix format
-  * Call createPublishers() from derived class
-  * Check subscriber
-* Contributors: Adraub, AntoBrandi, Błażej Sowa, Garrett Brown, Ramon Wijnands, Silvio Traversaro, Tatsuro Sakaguchi, Tim Clephas, Valerio Passamano
+* Split off pcl_ros_filter into separate library (`#480 <https://github.com/ros-perception/perception_pcl/issues/480>`_)
+* Add lazy feature to ros2 branch (`#477 <https://github.com/ros-perception/perception_pcl/issues/477>`_)
+* Deprecating tf2 C Headers (`#469 <https://github.com/ros-perception/perception_pcl/issues/469>`_)
+* Contributors: Adraub, Błażej Sowa, Lucas Wendland, Paul Bovbel, Tatsuro Sakaguchi
 
 2.6.2 (2024-11-07)
 ------------------
