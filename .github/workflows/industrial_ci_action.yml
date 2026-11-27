@@ -15,8 +15,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ROS_DISTRO: [jazzy]
+        ROS_DISTRO: [kilted, lyrical]
         ROS_REPO: [main]
+        include:
+          - ROS_DISTRO: rolling
+            ROS_REPO: testing
     env:
       CCACHE_DIR: "${{ github.workspace }}/.ccache"
     steps:
