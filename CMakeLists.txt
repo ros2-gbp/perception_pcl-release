@@ -39,7 +39,7 @@ target_include_directories(pcl_ros_tf SYSTEM PUBLIC
 )
 target_link_libraries(pcl_ros_tf PUBLIC
   ${geometry_msgs_TARGETS}
-  ${PCL_LIBRARIES}
+  pcl_common
   ${sensor_msgs_TARGETS}
   Eigen3::Eigen
   pcl_conversions::pcl_conversions
@@ -268,6 +268,8 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 
   find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_point_cloud tests/test_point_cloud.cpp)
+  target_link_libraries(test_point_cloud pcl_ros_tf)
   add_subdirectory(tests/filters)
   #add_rostest_gtest(test_tf_message_filter_pcl tests/test_tf_message_filter_pcl.launch src/test/test_tf_message_filter_pcl.cpp)
   #target_link_libraries(test_tf_message_filter_pcl ${catkin_LIBRARIES} ${GTEST_LIBRARIES})
